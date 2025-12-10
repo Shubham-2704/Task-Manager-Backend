@@ -10,7 +10,7 @@ async def get_users():
     # Find all member role users
     cursor = users.find({"role": "member"},{"password": 0})  # hide password
     user_list = await cursor.to_list(length=None)
-    print(user_list)
+    # print(user_list)
 
     result = []
 
