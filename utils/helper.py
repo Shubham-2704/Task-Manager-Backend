@@ -1,6 +1,7 @@
 from fastapi.responses import JSONResponse
 from config.database import database
 from bson import ObjectId
+from io import BytesIO
 
 users = database["users"]
 
@@ -39,3 +40,10 @@ async def populate_assigned_users(task):
             populated.append({"_id": uid})  # fallback
 
     return populated
+
+def save_workbook_to_bytes(workbook):
+    stream = BytesIO()
+    workbook.save(stream)
+    stream.seek(0)
+    return stream.getvalue()
+
