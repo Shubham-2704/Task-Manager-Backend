@@ -4,7 +4,8 @@ from config.database import lifespan
 from routes.auth_routes import router as auth_router
 from routes.user_routes import router as user_router
 from routes.task_routes import router as task_router
-from routes.report_routes import router as report_routes    
+from routes.report_routes import router as report_routes 
+from routes.websocket_routes import router as websocket_router
 from fastapi.staticfiles import StaticFiles
 
 
@@ -23,6 +24,7 @@ app.include_router(auth_router)
 app.include_router(user_router)
 app.include_router(task_router)
 app.include_router(report_routes)
+app.include_router(websocket_router)
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 

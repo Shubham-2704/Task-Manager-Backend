@@ -5,6 +5,7 @@ from fastapi import Request
 from models.task_model import *
 from bson import ObjectId
 from utils.helper import populate_assigned_users
+from websocket.manager import manager
 
 tasks = database["tasks"]
 users = database["users"]
@@ -166,6 +167,19 @@ async def create_task(request: Request, data: TaskCreate):
 
     # Add id field
     task_doc["id"] = str(result.inserted_id)
+
+    for user_id in data.assignedTo:
+        await manager.send_to_user(
+            user_id,
+            {
+                "type": "TASK_ASSIGNED",
+                "taskId": str(result.inserted_id),
+                "title": data.title,
+                "message": "A new task has been assigned to you"
+            }
+        )
+        print("🟢 WebSocket connected:", user_id)
+
 
     # Remove raw MongoDB _id before returning
     if "_id" in task_doc:
