@@ -83,3 +83,33 @@ async def get_profile(request: Request, user_data=Depends(protect)):
     user["_id"] = str(user["_id"]) 
  
     return user
+
+async def update_profile(request: Request, data: UserUpdate, user_data=Depends(protect)):
+    user_id = request.state.user["id"]
+
+    update_data = {
+        "updatedAt": datetime.now(timezone.utc)
+    }
+
+    # update only if image is provided
+    if data.profileImageUrl is not None:
+        update_data["profileImageUrl"] = data.profileImageUrl
+
+    await users.update_one(
+        {"_id": ObjectId(user_id)},
+        {"$set": update_data}
+    )
+
+    user = await users.find_one({"_id": ObjectId(user_id)})
+    print("Updated User:", user)
+
+    return {
+        "message": "Profile updated Successfully",
+        "id": str(user["_id"]),
+        "name": user["name"],
+        "email": user["email"],
+        "role": user["role"],
+        "profileImageUrl": user.get("profileImageUrl"),
+        "updatedAt": user.get("updatedAt")
+    }
+
