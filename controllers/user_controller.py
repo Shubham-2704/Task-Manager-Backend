@@ -47,3 +47,14 @@ async def get_user_by_id(user_id: str):
     del user["_id"]
 
     return user
+
+# Delete user by ID
+async def delete_user(user_id: str):
+    user = await users.find_one({"_id": ObjectId(user_id)})
+
+    if not user:
+        raise HTTPException(404, "User not found")
+
+    await users.delete_one({"_id": ObjectId(user_id)})
+
+    return {"message": "User deleted successfully"}

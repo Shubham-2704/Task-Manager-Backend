@@ -14,3 +14,8 @@ async def fetch_users(request: Request, user=Depends(admin_only)):
 @router.get("/{id}")
 async def fetch_user_by_id(id: str, request: Request, user=Depends(protect)):
     return await get_user_by_id(id)
+
+# Delete user by ID (Admin Only)
+@router.delete("/{id}")
+async def delete_user_by_id(id: str, request: Request, user=Depends(admin_only)):
+    return await delete_user(id)

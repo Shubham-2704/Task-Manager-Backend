@@ -24,3 +24,7 @@ class UserResponse(BaseModel):
     profileImageUrl: Optional[str]
     role: str
     token: str
+
+class UserUpdate(BaseModel):
+    profileImageUrl: Optional[str] = None
+
