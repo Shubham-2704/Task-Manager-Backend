@@ -28,3 +28,14 @@ class UserResponse(BaseModel):
 class UserUpdate(BaseModel):
     profileImageUrl: Optional[str] = None
 
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+class VerifyOtpRequest(BaseModel):
+    email: EmailStr
+    otp: str
+
+class ResetPasswordRequest(BaseModel):
+    email: EmailStr
+    otp: str
+    newPassword: str
